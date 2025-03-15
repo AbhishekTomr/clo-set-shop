@@ -36,8 +36,32 @@ const productsSlice = createSlice({
         priceByFilters.includes(item.pricingOption)
       );
     },
+    filterByKeyword: (
+      state,
+      {
+        payload: { keywords },
+      }: PayloadAction<{
+        keywords: string[];
+      }>
+    ) => {
+      if (!keywords.length) {
+        state.visibleProducts = state.allProducts;
+        return;
+      }
+      state.visibleProducts = state.allProducts.filter((item) => {
+        const { title, creator } = item;
+        return keywords.some((keyword) => {
+          const regex = new RegExp(`\\b${keyword}\\b`, "i");
+          if (regex.test(title) || regex.test(creator)) {
+            return true;
+          }
+          return false;
+        });
+      });
+    },
   },
 });
 
-export const { initialSetup, filterByPriceType } = productsSlice.actions;
+export const { initialSetup, filterByPriceType, filterByKeyword } =
+  productsSlice.actions;
 export default productsSlice.reducer;

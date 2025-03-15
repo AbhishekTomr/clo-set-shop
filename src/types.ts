@@ -18,4 +18,5 @@ export interface IProductsRes extends Product {
 
 export interface IProducts extends Product {
   pricingOption: PRICING_OPTION;
+  keywords: [];
 }

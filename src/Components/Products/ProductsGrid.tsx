@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { ProductServices } from "../../Services/ProductsServices";
 import { IProducts, IProductsRes, PRICING_OPTION } from "../../types";
-import { pricingMapper } from "../../helpers";
+import { pricingMapper, tokenize } from "../../helpers";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../Store/Store";
 import { initialSetup } from "../../Store/productsSlice";
+import { keyboard } from "@testing-library/user-event/dist/keyboard";
 
 const productServices = new ProductServices();
 
@@ -25,6 +26,7 @@ function ProductsGrid({}: Props) {
       products = products.map((item: IProductsRes) => ({
         ...item,
         pricingOption: pricingMapper(item.pricingOption),
+        keyboard: tokenize(item.creator).concat(tokenize(item.title)),
       }));
       dispatch(
         initialSetup({
