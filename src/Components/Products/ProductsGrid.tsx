@@ -43,14 +43,28 @@ function ProductsGrid({}: Props) {
   }, []);
 
   return (
-    <div>
-      ProductsGrid
+    <div
+      style={{
+        border: "1px solid red",
+        display: "flex",
+        flexFlow: "row wrap",
+        margin: "10px",
+      }}
+    >
       {isLoading ? (
         <>Loading...</>
       ) : (
         <>
           {(products as IProducts[]).map((item: IProducts) => (
-            <div key={item.id}>{item.title}</div>
+            <div
+              key={item.id}
+              style={{
+                border: "1px solid green",
+                width: "100px",
+              }}
+            >
+              {item.title}
+            </div>
           ))}
         </>
       )}
