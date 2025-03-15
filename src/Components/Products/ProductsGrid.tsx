@@ -36,6 +36,7 @@ function ProductsGrid({}: Props) {
       filters.priceType = priceTypeFilters.split("+") as PRICING_OPTION[];
     }
     filters.searchTerm = searchTerm;
+    console.log("filters", filters);
     dispatch(filterProducts({ filters: filters }));
   }, [searchParams]);
 
@@ -54,6 +55,7 @@ function ProductsGrid({}: Props) {
           visibleProducts: products,
         })
       );
+      applyFilters();
     } catch (err) {
       console.error(err);
     } finally {

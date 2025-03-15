@@ -5,8 +5,13 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 type Props = {};
 
 function ContentFilters({}: Props) {
-  const [priceFilter, setPriceFilter] = useState<PRICING_OPTION[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const [priceFilter, setPriceFilter] = useState<PRICING_OPTION[]>(
+    searchParams.get("priceType")
+      ? (searchParams.get("priceType")?.split("+") as PRICING_OPTION[])
+      : []
+  );
 
   const togglePrice = (pricingOpt: PRICING_OPTION) => {
     setPriceFilter((prices: PRICING_OPTION[]) => {

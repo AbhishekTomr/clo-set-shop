@@ -1,15 +1,14 @@
-import React, { ChangeEvent, useCallback, useEffect, useState } from "react";
-import { tokenize } from "../../helpers";
-import { useDispatch } from "react-redux";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 type Props = {};
 
 const SearchBar = (props: Props) => {
-  const [searchText, setSearchText] = useState<string>("");
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const [searchText, setSearchText] = useState<string>(
+    searchParams.get("searchTerm") || ""
+  );
 
   const onChangeHandler = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
@@ -27,6 +26,8 @@ const SearchBar = (props: Props) => {
     }
     setSearchParams(searchParams);
   }, [searchText]);
+
+  useEffect(() => {}, [searchParams]);
 
   return (
     <div>
