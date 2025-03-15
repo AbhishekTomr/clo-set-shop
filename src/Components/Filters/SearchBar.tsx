@@ -1,13 +1,15 @@
 import React, { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { tokenize } from "../../helpers";
 import { useDispatch } from "react-redux";
-import { filterByKeyword } from "../../Store/productsSlice";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 type Props = {};
 
 const SearchBar = (props: Props) => {
   const [searchText, setSearchText] = useState<string>("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const onChangeHandler = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
@@ -18,12 +20,12 @@ const SearchBar = (props: Props) => {
   );
 
   const onSubmitHandler = useCallback(() => {
-    let tokens = tokenize(searchText);
-    dispatch(
-      filterByKeyword({
-        keywords: tokens,
-      })
-    );
+    if (searchText.length) {
+      searchParams.set("searchTerm", searchText);
+    } else {
+      searchParams.delete("searchTerm");
+    }
+    setSearchParams(searchParams);
   }, [searchText]);
 
   return (

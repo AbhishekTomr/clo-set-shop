@@ -20,3 +20,8 @@ export interface IProducts extends Product {
   pricingOption: PRICING_OPTION;
   keywords: [];
 }
+
+export interface IFilters {
+  priceType: PRICING_OPTION[];
+  searchTerm: string;
+}

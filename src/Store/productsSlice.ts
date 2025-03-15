@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IProducts, PRICING_OPTION } from "../types";
+import { IFilters, IProducts, PRICING_OPTION } from "../types";
 import { stat } from "fs";
+import { tokenize } from "../helpers";
 
 interface productsSlice {
   allProducts: IProducts[];
@@ -20,48 +21,64 @@ const productsSlice = createSlice({
       state.allProducts = payload.allProducts;
       state.visibleProducts = payload.allProducts;
     },
-    filterByPriceType: (
+    // filterByPriceType: (
+    //   state,
+    //   {
+    //     payload: { priceByFilters },
+    //   }: PayloadAction<{
+    //     priceByFilters: PRICING_OPTION[];
+    //   }>
+    // ) => {
+    //   if (!priceByFilters.length) {
+    //     // state.visibleProducts = state.allProducts;
+    //     return;
+    //   }
+    // },
+    // filterBySearch: (
+    //   state,
+    //   {
+    //     payload: { searchTerm },
+    //   }: PayloadAction<{
+    //     searchTerm: string;
+    //   }>
+    // ) => {
+    //   if (!searchTerm.length) {
+    //     // state.visibleProducts = state.allProducts;
+    //     return;
+    //   }
+    // },
+
+    filterProducts: (
       state,
-      {
-        payload: { priceByFilters },
-      }: PayloadAction<{
-        priceByFilters: PRICING_OPTION[];
-      }>
+      { payload: { filters } }: PayloadAction<{ filters: IFilters }>
     ) => {
-      if (!priceByFilters.length) {
-        state.visibleProducts = state.allProducts;
-        return;
+      const { priceType, searchTerm } = filters;
+      let results = state.allProducts;
+      if (priceType.length) {
+        results = results.filter((item) =>
+          priceType.includes(item.pricingOption)
+        );
       }
-      state.visibleProducts = state.allProducts.filter((item) =>
-        priceByFilters.includes(item.pricingOption)
-      );
-    },
-    filterByKeyword: (
-      state,
-      {
-        payload: { keywords },
-      }: PayloadAction<{
-        keywords: string[];
-      }>
-    ) => {
-      if (!keywords.length) {
-        state.visibleProducts = state.allProducts;
-        return;
-      }
-      state.visibleProducts = state.allProducts.filter((item) => {
-        const { title, creator } = item;
-        return keywords.some((keyword) => {
-          const regex = new RegExp(`\\b${keyword}\\b`, "i");
-          if (regex.test(title) || regex.test(creator)) {
-            return true;
-          }
-          return false;
+      if (searchTerm.length) {
+        const keywords = tokenize(searchTerm);
+        results = results.filter((item) => {
+          const { title, creator } = item;
+          return keywords.some((keyword) => {
+            const regex = new RegExp(`\\b${keyword}\\b`, "i");
+            if (regex.test(title) || regex.test(creator)) {
+              return true;
+            }
+            return false;
+          });
         });
-      });
+      }
+      state.visibleProducts = results;
+    },
+    reset(state) {
+      state.visibleProducts = state.allProducts;
     },
   },
 });
 
-export const { initialSetup, filterByPriceType, filterByKeyword } =
-  productsSlice.actions;
+export const { initialSetup, filterProducts, reset } = productsSlice.actions;
 export default productsSlice.reducer;

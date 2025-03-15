@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { PRICING_OPTION } from "../../types";
 import { useDispatch } from "react-redux";
-import { filterByPriceType } from "../../Store/productsSlice";
-
+import { useNavigate, useSearchParams } from "react-router-dom";
 type Props = {};
 
 function ContentFilters({}: Props) {
   const [priceFilter, setPriceFilter] = useState<PRICING_OPTION[]>([]);
-  const dispatch = useDispatch();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const togglePrice = (pricingOpt: PRICING_OPTION) => {
     setPriceFilter((prices: PRICING_OPTION[]) => {
@@ -20,7 +19,12 @@ function ContentFilters({}: Props) {
   };
 
   useEffect(() => {
-    dispatch(filterByPriceType({ priceByFilters: priceFilter }));
+    if (priceFilter.length === 0) {
+      searchParams.delete("priceType");
+    } else {
+      searchParams.set("priceType", priceFilter.join("+"));
+    }
+    setSearchParams(searchParams);
   }, [priceFilter]);
 
   return (

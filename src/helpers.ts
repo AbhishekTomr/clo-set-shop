@@ -16,3 +16,5 @@ export const tokenize = (mainString: string, tokens: string[] = []) => {
   tokens = tokens.concat(newTokens);
   return tokens;
 };
+
+export const extractFiltersAndSort = () => {};

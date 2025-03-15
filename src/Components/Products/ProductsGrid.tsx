@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { ProductServices } from "../../Services/ProductsServices";
-import { IProducts, IProductsRes, PRICING_OPTION } from "../../types";
+import { IFilters, IProducts, IProductsRes, PRICING_OPTION } from "../../types";
 import { pricingMapper, tokenize } from "../../helpers";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../Store/Store";
-import { initialSetup } from "../../Store/productsSlice";
-import { keyboard } from "@testing-library/user-event/dist/keyboard";
+import { filterProducts, initialSetup, reset } from "../../Store/productsSlice";
+import { useSearchParams } from "react-router-dom";
 
 const productServices = new ProductServices();
 
@@ -13,11 +13,31 @@ type Props = {};
 
 function ProductsGrid({}: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [searchParams] = useSearchParams();
 
   const dispatch = useDispatch();
   const products = useSelector<RootState>(
     (state: RootState) => state.products.visibleProducts
   );
+
+  const applyFilters = useCallback(() => {
+    if (searchParams.size === 0) {
+      dispatch(reset());
+      return;
+    }
+    const filters: IFilters = {
+      priceType: [],
+      searchTerm: "",
+    };
+    const priceTypeFilters = searchParams.get("priceType");
+    const searchTerm = searchParams.get("searchTerm") || "";
+
+    if (priceTypeFilters) {
+      filters.priceType = priceTypeFilters.split("+") as PRICING_OPTION[];
+    }
+    filters.searchTerm = searchTerm;
+    dispatch(filterProducts({ filters: filters }));
+  }, [searchParams]);
 
   const getAllProducts = async () => {
     try {
@@ -43,6 +63,10 @@ function ProductsGrid({}: Props) {
   useEffect(() => {
     getAllProducts();
   }, []);
+
+  useEffect(() => {
+    applyFilters();
+  }, [searchParams]);
 
   return (
     <div
