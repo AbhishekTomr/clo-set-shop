@@ -1,0 +1,48 @@
+@use "../../index" as *;
+
+.search-bar {
+  .search {
+    background-color: $seondary-background;
+    border: 1px solid $primary-borders;
+    width: 100%;
+    margin: 24px auto;
+    padding: 10px;
+
+    &::before {
+      border-bottom: 1px solid transparent !important;
+    }
+  }
+}
+.pricing-opt-wrapper {
+  .filters {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    color: $seondary-text;
+    padding: 0 24px;
+    padding-bottom: 10px;
+    font-size: 14px;
+    .pricing-label {
+      width: 130px;
+      color: $seondary-text;
+    }
+    .checkbox-wrapper {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      width: 100%;
+      .checkbox {
+        color: $seondary-text;
+      }
+      .MuiFormControlLabel-label {
+        font-size: 14px;
+      }
+    }
+  }
+  .reset-btn {
+    color: $primary-text !important;
+    &:hover {
+      background-color: $seondary-background;
+    }
+  }
+}

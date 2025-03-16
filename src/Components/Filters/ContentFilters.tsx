@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { PRICING_OPTION } from "../../types";
-import { useDispatch } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import "./Filters.scss";
+import { Checkbox, FormControl, FormControlLabel, Button } from "@mui/material";
+
 type Props = {};
 
 function ContentFilters({}: Props) {
@@ -23,6 +25,10 @@ function ContentFilters({}: Props) {
     });
   };
 
+  const reset = () => {
+    setSearchParams(new URLSearchParams());
+  };
+
   useEffect(() => {
     if (priceFilter.length === 0) {
       searchParams.delete("priceType");
@@ -33,38 +39,57 @@ function ContentFilters({}: Props) {
   }, [priceFilter]);
 
   return (
-    <div>
-      <span>Pricing Options</span>
-      <label>
-        <input
-          type="checkbox"
-          name="pricing-opt"
-          value={PRICING_OPTION.PAID}
-          checked={priceFilter.includes(PRICING_OPTION.PAID)}
-          onChange={togglePrice.bind(null, PRICING_OPTION.PAID)}
-        />
-        Paid
-      </label>
-      <label>
-        <input
-          type="checkbox"
-          name="pricing-opt"
-          value={PRICING_OPTION.FREE}
-          checked={priceFilter.includes(PRICING_OPTION.FREE)}
-          onChange={togglePrice.bind(null, PRICING_OPTION.FREE)}
-        />
-        Free
-      </label>
-      <label>
-        <input
-          type="checkbox"
-          name="pricing-opt"
-          value={PRICING_OPTION.VIEW_ONLY}
-          checked={priceFilter.includes(PRICING_OPTION.VIEW_ONLY)}
-          onChange={togglePrice.bind(null, PRICING_OPTION.VIEW_ONLY)}
-        />
-        View Only
-      </label>
+    <div className="pricing-opt-wrapper">
+      <div className="filters">
+        <span className="pricing-label">Pricing Options</span>
+        <FormControl className="checkbox-wrapper">
+          <FormControlLabel
+            key={PRICING_OPTION.PAID}
+            className="price-check-control"
+            control={
+              <Checkbox
+                checked={priceFilter.includes(PRICING_OPTION.PAID)}
+                onChange={togglePrice.bind(null, PRICING_OPTION.PAID)}
+                name={"pricing-options"}
+                size="small"
+                className="checkbox"
+              />
+            }
+            label={"Paid"}
+          />
+          <FormControlLabel
+            key={PRICING_OPTION.FREE}
+            className="price-check-control"
+            control={
+              <Checkbox
+                checked={priceFilter.includes(PRICING_OPTION.FREE)}
+                onChange={togglePrice.bind(null, PRICING_OPTION.FREE)}
+                name={"pricing-options"}
+                size="small"
+                className="checkbox"
+              />
+            }
+            label={"Free"}
+          />
+          <FormControlLabel
+            key={PRICING_OPTION.VIEW_ONLY}
+            className="price-check-control"
+            control={
+              <Checkbox
+                checked={priceFilter.includes(PRICING_OPTION.VIEW_ONLY)}
+                onChange={togglePrice.bind(null, PRICING_OPTION.VIEW_ONLY)}
+                name={"pricing-options"}
+                size="small"
+                className="checkbox"
+              />
+            }
+            label={"View Only"}
+          />
+        </FormControl>
+        <Button className="reset-btn" onClick={reset}>
+          Reset
+        </Button>
+      </div>
     </div>
   );
 }

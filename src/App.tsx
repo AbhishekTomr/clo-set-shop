@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import "./App.scss";
 import ProductsGrid from "./Components/Products/ProductsGrid";
 import { Provider } from "react-redux";
@@ -33,8 +32,8 @@ function App() {
     <ThemeProvider theme={theme}>
       <Provider store={store}>
         <div className="app">
-          {/* <SearchBar />
-        <ContentFilters /> */}
+          <SearchBar />
+          <ContentFilters />
           <ProductsGrid />
         </div>
       </Provider>

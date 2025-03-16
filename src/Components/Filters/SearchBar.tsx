@@ -1,5 +1,8 @@
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import "./Filters.scss";
+import { IconButton, Input, InputAdornment } from "@mui/material";
+import { Search } from "@mui/icons-material";
 
 type Props = {};
 
@@ -27,12 +30,26 @@ const SearchBar = (props: Props) => {
     setSearchParams(searchParams);
   }, [searchText]);
 
-  useEffect(() => {}, [searchParams]);
-
   return (
-    <div>
-      <input value={searchText} onChange={onChangeHandler} />
-      <button onClick={onSubmitHandler}>Search</button>
+    <div className="search-bar">
+      <Input
+        value={searchText}
+        onChange={onChangeHandler}
+        className="search"
+        placeholder="Find the items you're looking for"
+        endAdornment={
+          <InputAdornment position={"end"}>
+            <IconButton onClick={onSubmitHandler}>
+              <Search
+                sx={{
+                  color: "white",
+                }}
+              />
+            </IconButton>
+          </InputAdornment>
+        }
+      />
+      {/* <button onClick={onSubmitHandler}>Search</button> */}
     </div>
   );
 };
