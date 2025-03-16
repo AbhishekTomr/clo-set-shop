@@ -11,9 +11,10 @@ type Props = {
 const SearchBar = ({ initialVal }: Props) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [searchText, setSearchText] = useState<string>("");
+  const [searchText, setSearchText] = useState<string>(initialVal);
 
   useEffect(() => {
+    if (initialVal === searchText) return;
     setSearchText(initialVal);
   }, [initialVal]);
 

@@ -11,9 +11,10 @@ type Props = {
 function ContentFilters({ initialVal }: Props) {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [priceFilter, setPriceFilter] = useState<PRICING_OPTION[]>([]);
+  const [priceFilter, setPriceFilter] = useState<PRICING_OPTION[]>(initialVal);
 
   useEffect(() => {
+    if (initialVal.length === priceFilter.length) return;
     setPriceFilter(initialVal);
   }, [initialVal]);
 
