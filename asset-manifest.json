@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/clo-set-shop/static/css/main.40ca393b.css",
+    "main.js": "/clo-set-shop/static/js/main.272b3b3d.js",
+    "static/js/453.0354db51.chunk.js": "/clo-set-shop/static/js/453.0354db51.chunk.js",
+    "index.html": "/clo-set-shop/index.html",
+    "main.40ca393b.css.map": "/clo-set-shop/static/css/main.40ca393b.css.map",
+    "main.272b3b3d.js.map": "/clo-set-shop/static/js/main.272b3b3d.js.map",
+    "453.0354db51.chunk.js.map": "/clo-set-shop/static/js/453.0354db51.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.40ca393b.css",
+    "static/js/main.272b3b3d.js"
+  ]
+}
