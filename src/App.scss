@@ -12,9 +12,14 @@ body,
 }
 
 .app {
-  background-color: $primary-background;
+  background-color: $seondary-background-2;
   color: $primary-text;
   font-family: Arial, Helvetica, sans-serif;
   padding: 24px !important;
   width: 100%;
+}
+.header-bar {
+  padding: 24px;
+  background-color: $primary-background;
+  border-bottom: 1px solid $primary-borders;
 }

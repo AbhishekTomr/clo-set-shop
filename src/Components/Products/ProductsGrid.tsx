@@ -49,7 +49,9 @@ function ProductsGrid({ filters }: Props) {
     } catch (err) {
       console.error(err);
     } finally {
-      setIsLoading(false);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
     }
   };
 
@@ -89,7 +91,7 @@ function ProductsGrid({ filters }: Props) {
           scrollableTarget="product-grid"
           className="infinite-wrapper"
         >
-          <Grid container spacing={2} className="grid" id={"grid"}>
+          <Grid container spacing={5} className="grid" id={"grid"}>
             {visibleItems.map((item: IProducts) => (
               <Grid
                 item
@@ -98,7 +100,7 @@ function ProductsGrid({ filters }: Props) {
                 sm={6}
                 md={4}
                 lg={3}
-                height={410}
+                height={600}
               >
                 <Product product={item} />
               </Grid>

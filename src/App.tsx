@@ -4,10 +4,17 @@ import { Provider } from "react-redux";
 import { store } from "./Store/Store";
 import ContentFilters from "./Components/Filters/ContentFilters";
 import SearchBar from "./Components/Filters/SearchBar";
-import { createTheme, ThemeProvider } from "@mui/material";
+import {
+  Box,
+  createTheme,
+  ThemeProvider,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { IFilters, PRICING_OPTION } from "./types";
+import { AppBar } from "@mui/material";
 
 function App() {
   const theme = createTheme({
@@ -60,6 +67,11 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Provider store={store}>
+        <Box sx={{ flexGrow: 1 }} className="header-bar">
+          <AppBar position="static">
+            <Typography>ClO-SET</Typography>
+          </AppBar>
+        </Box>
         <div className="app">
           <SearchBar initialVal={filters.searchTerm as string} />
           <ContentFilters initialVal={filters.priceType as PRICING_OPTION[]} />

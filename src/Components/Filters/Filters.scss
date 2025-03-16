@@ -6,7 +6,7 @@
     border: 1px solid $primary-borders;
     width: 100%;
     margin: 24px auto;
-    padding: 10px;
+    padding: 12px 24px;
 
     &::before {
       border-bottom: 1px solid transparent !important;
@@ -14,13 +14,16 @@
   }
 }
 .pricing-opt-wrapper {
+  // border: 1px solid red;
+  background-color: $primary-background-2;
+  margin-bottom: 24px;
+
   .filters {
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
     color: $seondary-text;
-    padding: 0 24px;
-    padding-bottom: 10px;
+    padding: 12px 24px;
     font-size: 14px;
     @media (max-width: $screen-md) {
       flex-flow: column nowrap;
