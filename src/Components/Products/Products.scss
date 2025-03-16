@@ -1,0 +1,36 @@
+@use "../../index.scss" as *;
+.product-grid {
+  min-height: 100vh;
+  .grid {
+    padding: 24px;
+    .infinite-wrapper {
+    }
+  }
+}
+.product {
+  border: 1px solid $primary-borders;
+  height: 100%;
+  .product-img {
+    height: 80%;
+  }
+  .product-content {
+    display: flex;
+    justify-content: space-between;
+    .product-details,
+    .product-price {
+      display: flex;
+      flex-flow: column;
+      font-weight: bold;
+      span {
+        margin: 3px 0;
+      }
+      .creator {
+        font-weight: normal;
+        color: $seondary-text;
+      }
+    }
+    .product-price {
+      font-size: 20px;
+    }
+  }
+}

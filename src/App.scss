@@ -1,0 +1,17 @@
+@use "index" as *;
+
+* {
+  border: none;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html,
+body,
+#root {
+}
+.app {
+  background-color: $primary-background;
+  color: $primary-text;
+  font-family: Arial, Helvetica, sans-serif;
+}

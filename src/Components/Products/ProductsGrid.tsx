@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { ProductServices } from "../../Services/ProductsServices";
 import { IFilters, IProducts, IProductsRes, PRICING_OPTION } from "../../types";
 import { pricingMapper, tokenize } from "../../helpers";
@@ -6,6 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../Store/Store";
 import { filterProducts, initialSetup, reset } from "../../Store/productsSlice";
 import { useSearchParams } from "react-router-dom";
+import { Grid } from "@mui/material";
+import "./Products.scss";
+import Product from "./Product";
+import LoadingSpinner from "../Common/LoadingSpinner";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const productServices = new ProductServices();
 
@@ -14,6 +19,7 @@ type Props = {};
 function ProductsGrid({}: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [searchParams] = useSearchParams();
+  const [index, setIndex] = useState(16);
 
   const dispatch = useDispatch();
   const products = useSelector<RootState>(
@@ -36,7 +42,6 @@ function ProductsGrid({}: Props) {
       filters.priceType = priceTypeFilters.split("+") as PRICING_OPTION[];
     }
     filters.searchTerm = searchTerm;
-    console.log("filters", filters);
     dispatch(filterProducts({ filters: filters }));
   }, [searchParams]);
 
@@ -62,6 +67,7 @@ function ProductsGrid({}: Props) {
       setIsLoading(false);
     }
   };
+
   useEffect(() => {
     getAllProducts();
   }, []);
@@ -70,31 +76,42 @@ function ProductsGrid({}: Props) {
     applyFilters();
   }, [searchParams]);
 
+  const visibleItems = useMemo(
+    () => (products as IProducts[]).slice(0, index),
+    [products, index]
+  );
+
   return (
-    <div
-      style={{
-        border: "1px solid red",
-        display: "flex",
-        flexFlow: "row wrap",
-        margin: "10px",
-      }}
-    >
+    <div className="product-grid">
       {isLoading ? (
-        <>Loading...</>
+        <LoadingSpinner />
       ) : (
-        <>
-          {(products as IProducts[]).map((item: IProducts) => (
-            <div
-              key={item.id}
-              style={{
-                border: "1px solid green",
-                width: "100px",
-              }}
-            >
-              {item.title}
+        <InfiniteScroll
+          dataLength={visibleItems.length}
+          next={() =>
+            setTimeout(() => {
+              setIndex((index) => index + 8);
+            }, 1000)
+          }
+          hasMore={index < (products as IProducts[]).length}
+          loader={<LoadingSpinner />}
+          endMessage={
+            <div style={{ textAlign: "center", marginBottom: "20px" }}>
+              {" "}
+              No more products!
             </div>
-          ))}
-        </>
+          }
+          scrollableTarget="product-grid"
+          className="infinite-wrapper"
+        >
+          <Grid container spacing={2} className="grid" id={"grid"}>
+            {visibleItems.map((item: IProducts) => (
+              <Grid item key={item.id} xs={3} height={410}>
+                <Product product={item} />
+              </Grid>
+            ))}
+          </Grid>
+        </InfiniteScroll>
       )}
     </div>
   );
