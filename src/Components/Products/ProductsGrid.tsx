@@ -81,7 +81,7 @@ function ProductsGrid({ filters }: Props) {
           hasMore={index < (products as IProducts[]).length}
           loader={<LoadingSpinner />}
           endMessage={
-            <div style={{ textAlign: "center", marginBottom: "20px" }}>
+            <div style={{ textAlign: "center", margin: "20px" }}>
               {" "}
               No more products!
             </div>
