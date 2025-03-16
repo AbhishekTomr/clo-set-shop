@@ -29,7 +29,15 @@ function App() {
         secondary: "#d0d3d4",
       },
     },
-    typography: {},
+    breakpoints: {
+      values: {
+        xs: 0,
+        sm: 480,
+        md: 768,
+        lg: 1200,
+        xl: 1536,
+      },
+    },
   });
 
   const [searchParams, setSearchParams] = useSearchParams();

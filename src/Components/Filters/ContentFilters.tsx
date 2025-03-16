@@ -2,7 +2,15 @@ import React, { useEffect, useState } from "react";
 import { PRICING_OPTION } from "../../types";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import "./Filters.scss";
-import { Checkbox, FormControl, FormControlLabel, Button } from "@mui/material";
+import {
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  Button,
+  Typography,
+  Container,
+  Box,
+} from "@mui/material";
 
 type Props = {
   initialVal: PRICING_OPTION[];
@@ -42,9 +50,9 @@ function ContentFilters({ initialVal }: Props) {
   }, [priceFilter]);
 
   return (
-    <div className="pricing-opt-wrapper">
-      <div className="filters">
-        <span className="pricing-label">Pricing Options</span>
+    <Box className="pricing-opt-wrapper">
+      <Box className="filters">
+        <Typography className="pricing-label">Pricing Options</Typography>
         <FormControl className="checkbox-wrapper">
           <FormControlLabel
             key={PRICING_OPTION.PAID}
@@ -92,8 +100,8 @@ function ContentFilters({ initialVal }: Props) {
         <Button className="reset-btn" onClick={reset}>
           Reset
         </Button>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 

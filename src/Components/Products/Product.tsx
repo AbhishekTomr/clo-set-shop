@@ -1,5 +1,5 @@
 import { IProducts, PRICING_OPTION } from "../../types";
-import { Card, CardContent, CardMedia, Typography } from "@mui/material";
+import { Box, Card, CardContent, CardMedia, Typography } from "@mui/material";
 import "./Products.scss";
 
 type Props = {
@@ -28,11 +28,11 @@ const Product = ({ product }: Props) => {
         className="product-img"
       />
       <CardContent className="product-content">
-        <span className="product-details">
-          <span className="title">{product.title}</span>
-          <span className="creator">{product.creator}</span>
-        </span>
-        <span className="product-price">{getPrice()}</span>
+        <Box className="product-details">
+          <Typography className="title">{product.title}</Typography>
+          <Typography className="creator">{product.creator}</Typography>
+        </Box>
+        <Typography className="product-price">{getPrice()}</Typography>
       </CardContent>
     </Card>
   );

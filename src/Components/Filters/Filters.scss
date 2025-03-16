@@ -22,15 +22,25 @@
     padding: 0 24px;
     padding-bottom: 10px;
     font-size: 14px;
+    @media (max-width: $screen-md) {
+      flex-flow: column nowrap;
+      align-items: center;
+      justify-content: center;
+    }
     .pricing-label {
-      width: 130px;
+      min-width: 130px;
       color: $seondary-text;
     }
     .checkbox-wrapper {
       display: flex;
       flex-direction: row;
       align-items: center;
+      justify-content: flex-start;
       width: 100%;
+      @media (max-width: $screen-md) {
+        align-items: center;
+        justify-content: center;
+      }
       .checkbox {
         color: $seondary-text;
       }
