@@ -91,7 +91,15 @@ function ProductsGrid({ filters }: Props) {
         >
           <Grid container spacing={2} className="grid" id={"grid"}>
             {visibleItems.map((item: IProducts) => (
-              <Grid item key={item.id} xs={3} height={410}>
+              <Grid
+                item
+                key={item.id}
+                xs={12}
+                sm={6}
+                md={4}
+                lg={3}
+                height={410}
+              >
                 <Product product={item} />
               </Grid>
             ))}
