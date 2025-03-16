@@ -4,16 +4,18 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import "./Filters.scss";
 import { Checkbox, FormControl, FormControlLabel, Button } from "@mui/material";
 
-type Props = {};
+type Props = {
+  initialVal: PRICING_OPTION[];
+};
 
-function ContentFilters({}: Props) {
+function ContentFilters({ initialVal }: Props) {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [priceFilter, setPriceFilter] = useState<PRICING_OPTION[]>(
-    searchParams.get("priceType")
-      ? (searchParams.get("priceType")?.split("+") as PRICING_OPTION[])
-      : []
-  );
+  const [priceFilter, setPriceFilter] = useState<PRICING_OPTION[]>([]);
+
+  useEffect(() => {
+    setPriceFilter(initialVal);
+  }, [initialVal]);
 
   const togglePrice = (pricingOpt: PRICING_OPTION) => {
     setPriceFilter((prices: PRICING_OPTION[]) => {

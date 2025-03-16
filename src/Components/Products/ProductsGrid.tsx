@@ -1,11 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ProductServices } from "../../Services/ProductsServices";
 import { IFilters, IProducts, IProductsRes, PRICING_OPTION } from "../../types";
 import { pricingMapper, tokenize } from "../../helpers";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../Store/Store";
-import { filterProducts, initialSetup, reset } from "../../Store/productsSlice";
-import { useSearchParams } from "react-router-dom";
+import { filterProducts, initialSetup } from "../../Store/productsSlice";
 import { Grid } from "@mui/material";
 import "./Products.scss";
 import Product from "./Product";
@@ -14,11 +13,12 @@ import InfiniteScroll from "react-infinite-scroll-component";
 
 const productServices = new ProductServices();
 
-type Props = {};
+type Props = {
+  filters: IFilters;
+};
 
-function ProductsGrid({}: Props) {
+function ProductsGrid({ filters }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [searchParams] = useSearchParams();
   const [index, setIndex] = useState(16);
 
   const dispatch = useDispatch();
@@ -27,23 +27,8 @@ function ProductsGrid({}: Props) {
   );
 
   const applyFilters = useCallback(() => {
-    if (searchParams.size === 0) {
-      dispatch(reset());
-      return;
-    }
-    const filters: IFilters = {
-      priceType: [],
-      searchTerm: "",
-    };
-    const priceTypeFilters = searchParams.get("priceType");
-    const searchTerm = searchParams.get("searchTerm") || "";
-
-    if (priceTypeFilters) {
-      filters.priceType = priceTypeFilters.split("+") as PRICING_OPTION[];
-    }
-    filters.searchTerm = searchTerm;
     dispatch(filterProducts({ filters: filters }));
-  }, [searchParams]);
+  }, [filters]);
 
   const getAllProducts = async () => {
     try {
@@ -74,7 +59,7 @@ function ProductsGrid({}: Props) {
 
   useEffect(() => {
     applyFilters();
-  }, [searchParams]);
+  }, [filters]);
 
   const visibleItems = useMemo(
     () => (products as IProducts[]).slice(0, index),

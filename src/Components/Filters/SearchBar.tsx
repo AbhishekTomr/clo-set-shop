@@ -4,14 +4,18 @@ import "./Filters.scss";
 import { IconButton, Input, InputAdornment } from "@mui/material";
 import { Search } from "@mui/icons-material";
 
-type Props = {};
+type Props = {
+  initialVal: string;
+};
 
-const SearchBar = (props: Props) => {
+const SearchBar = ({ initialVal }: Props) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [searchText, setSearchText] = useState<string>(
-    searchParams.get("searchTerm") || ""
-  );
+  const [searchText, setSearchText] = useState<string>("");
+
+  useEffect(() => {
+    setSearchText(initialVal);
+  }, [initialVal]);
 
   const onChangeHandler = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {

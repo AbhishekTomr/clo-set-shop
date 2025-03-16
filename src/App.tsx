@@ -5,6 +5,9 @@ import { store } from "./Store/Store";
 import ContentFilters from "./Components/Filters/ContentFilters";
 import SearchBar from "./Components/Filters/SearchBar";
 import { createTheme, ThemeProvider } from "@mui/material";
+import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { IFilters, PRICING_OPTION } from "./types";
 
 function App() {
   const theme = createTheme({
@@ -28,13 +31,31 @@ function App() {
     },
     typography: {},
   });
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const filters = useMemo(() => {
+    const filters: IFilters = {
+      priceType: [],
+      searchTerm: "",
+    };
+    const priceTypeFilters = searchParams.get("priceType");
+    const searchTerm = searchParams.get("searchTerm") || "";
+
+    if (priceTypeFilters) {
+      filters.priceType = priceTypeFilters.split("+") as PRICING_OPTION[];
+    }
+    filters.searchTerm = searchTerm;
+    return filters;
+  }, [searchParams]);
+
   return (
     <ThemeProvider theme={theme}>
       <Provider store={store}>
         <div className="app">
-          <SearchBar />
-          <ContentFilters />
-          <ProductsGrid />
+          <SearchBar initialVal={filters.searchTerm as string} />
+          <ContentFilters initialVal={filters.priceType as PRICING_OPTION[]} />
+          <ProductsGrid filters={filters} />
         </div>
       </Provider>
     </ThemeProvider>
