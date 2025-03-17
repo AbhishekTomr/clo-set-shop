@@ -6,17 +6,17 @@ import { Search } from "@mui/icons-material";
 
 type Props = {
   initialVal: string;
+  reset: boolean;
 };
 
-const SearchBar = ({ initialVal }: Props) => {
+const SearchBar = ({ initialVal, reset }: Props) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [searchText, setSearchText] = useState<string>(initialVal);
 
   useEffect(() => {
-    if (initialVal === searchText) return;
-    setSearchText(initialVal);
-  }, [initialVal]);
+    if (reset) setSearchText("");
+  }, [reset]);
 
   const onChangeHandler = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {

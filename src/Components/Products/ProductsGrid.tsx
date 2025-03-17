@@ -11,57 +11,15 @@ import Product from "./Product";
 import LoadingSpinner from "../Common/LoadingSpinner";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-const productServices = new ProductServices();
+type Props = {};
 
-type Props = {
-  filters: IFilters;
-};
-
-function ProductsGrid({ filters }: Props) {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+function ProductsGrid({}: Props) {
   const [index, setIndex] = useState(16);
 
   const dispatch = useDispatch();
   const products = useSelector<RootState>(
     (state: RootState) => state.products.visibleProducts
   );
-
-  const applyFilters = useCallback(() => {
-    dispatch(filterProducts({ filters: filters }));
-  }, [filters]);
-
-  const getAllProducts = async () => {
-    try {
-      setIsLoading(true);
-      let products = await productServices.fetchAllProducts();
-      products = products.map((item: IProductsRes) => ({
-        ...item,
-        pricingOption: pricingMapper(item.pricingOption),
-        keyboard: tokenize(item.creator).concat(tokenize(item.title)),
-      }));
-      dispatch(
-        initialSetup({
-          allProducts: products,
-          visibleProducts: products,
-        })
-      );
-      applyFilters();
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 1000);
-    }
-  };
-
-  useEffect(() => {
-    getAllProducts();
-  }, []);
-
-  useEffect(() => {
-    applyFilters();
-  }, [filters]);
 
   const visibleItems = useMemo(
     () => (products as IProducts[]).slice(0, index),
@@ -70,7 +28,7 @@ function ProductsGrid({ filters }: Props) {
 
   return (
     <div className="product-grid">
-      {isLoading ? (
+      {!(products as IProducts[]).length ? (
         <LoadingSpinner />
       ) : (
         <InfiniteScroll

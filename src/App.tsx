@@ -2,19 +2,9 @@ import "./App.scss";
 import ProductsGrid from "./Components/Products/ProductsGrid";
 import { Provider } from "react-redux";
 import { store } from "./Store/Store";
-import ContentFilters from "./Components/Filters/ContentFilters";
-import SearchBar from "./Components/Filters/SearchBar";
-import {
-  Box,
-  createTheme,
-  ThemeProvider,
-  Toolbar,
-  Typography,
-} from "@mui/material";
-import { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import { IFilters, PRICING_OPTION } from "./types";
+import { Box, createTheme, ThemeProvider, Typography } from "@mui/material";
 import { AppBar } from "@mui/material";
+import Filters from "./Components/Filters/Filters";
 
 function App() {
   const theme = createTheme({
@@ -47,23 +37,6 @@ function App() {
     },
   });
 
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const filters = useMemo(() => {
-    const filters: IFilters = {
-      priceType: [],
-      searchTerm: "",
-    };
-    const priceTypeFilters = searchParams.get("priceType");
-    const searchTerm = searchParams.get("searchTerm") || "";
-
-    if (priceTypeFilters) {
-      filters.priceType = priceTypeFilters.split("+") as PRICING_OPTION[];
-    }
-    filters.searchTerm = searchTerm;
-    return filters;
-  }, [searchParams]);
-
   return (
     <ThemeProvider theme={theme}>
       <Provider store={store}>
@@ -73,9 +46,8 @@ function App() {
           </AppBar>
         </Box>
         <div className="app">
-          <SearchBar initialVal={filters.searchTerm as string} />
-          <ContentFilters initialVal={filters.priceType as PRICING_OPTION[]} />
-          <ProductsGrid filters={filters} />
+          <Filters />
+          <ProductsGrid />
         </div>
       </Provider>
     </ThemeProvider>

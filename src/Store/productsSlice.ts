@@ -52,7 +52,11 @@ const productsSlice = createSlice({
       state,
       { payload: { filters } }: PayloadAction<{ filters: IFilters }>
     ) => {
-      const { priceType, searchTerm } = filters;
+      const {
+        priceType,
+        searchTerm,
+        price: { min, max },
+      } = filters;
       let results = state.allProducts;
       if (priceType.length) {
         results = results.filter((item) =>
@@ -72,6 +76,9 @@ const productsSlice = createSlice({
           });
         });
       }
+      results = results.filter(({ price }) => {
+        return price >= min && price <= max;
+      });
       state.visibleProducts = results;
     },
     reset(state) {

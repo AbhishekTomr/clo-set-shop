@@ -14,7 +14,7 @@ const Product = ({ product }: Props) => {
       case PRICING_OPTION.VIEW_ONLY:
         return "View Only";
       default:
-        return `$${product.price}.00`;
+        return `$${parseFloat(product.price.toString()).toFixed(2)}`;
     }
   };
   return (

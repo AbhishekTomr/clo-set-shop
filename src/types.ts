@@ -24,4 +24,8 @@ export interface IProducts extends Product {
 export interface IFilters {
   priceType: PRICING_OPTION[];
   searchTerm: string;
+  price: {
+    min: number;
+    max: number;
+  };
 }

@@ -1,0 +1,16 @@
+@use "../../index.scss" as *;
+
+.price-slider-wrap {
+  color: $primary-text;
+  display: flex;
+  align-items: center;
+  .price {
+    width: 50px;
+    text-align: center;
+  }
+  .slider {
+    color: $primary-text;
+    width: 300px;
+    margin: 0 10px;
+  }
+}
