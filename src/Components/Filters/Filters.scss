@@ -53,9 +53,10 @@
     }
   }
   .reset-btn {
-    color: $primary-text !important;
-    &:hover {
-      background-color: $seondary-background;
+    color: $primary-text;
+    &:hover,
+    &:focus {
+      opacity: 0.9;
     }
   }
 }
@@ -72,8 +73,12 @@
   }
   .sort-by-selector {
     text-align: center;
-    background-color: $primary-background-2;
     padding: 3px 5px;
+
+    border-bottom: 1px solid $primary-text;
+    &:hover {
+      border-bottom: 1px solid $primary-text;
+    }
     .MuiSelect-icon {
       color: $seondary-text;
     }
@@ -81,5 +86,5 @@
 }
 
 .MuiList-root.MuiList-padding.MuiMenu-list {
-  background-color: $primary-background-2 !important;
+  background-color: $primary-background-2;
 }

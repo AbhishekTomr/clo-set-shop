@@ -10,7 +10,11 @@
   }
   .slider {
     color: $primary-text;
-    width: 300px;
+    width: 200px;
     margin: 0 10px;
+  }
+  .MuiSlider-track {
+    color: #008080;
+    height: 5px;
   }
 }
