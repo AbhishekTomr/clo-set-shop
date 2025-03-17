@@ -1,9 +1,9 @@
 import { useMemo, useState } from "react";
 import { IProducts } from "../../types";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../Store/Store";
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import "./Products.scss";
 import Product from "./Product";
 import LoadingSpinner from "../Common/LoadingSpinner";
@@ -14,19 +14,23 @@ type Props = {};
 function ProductsGrid({}: Props) {
   const [index, setIndex] = useState(16);
 
-  const dispatch = useDispatch();
-  const products = useSelector<RootState>(
-    (state: RootState) => state.products.visibleProducts
-  );
+  const [products, isLoading] = useSelector((state: RootState) => {
+    const { visibleProducts, isLoading } = state.products;
+    return [visibleProducts, isLoading];
+  });
 
   const visibleItems = useMemo(
     () => (products as IProducts[]).slice(0, index),
     [products, index]
   );
 
+  if (!isLoading && visibleItems.length === 0) {
+    return <Typography className="no-data">No Products Found !!</Typography>;
+  }
+
   return (
     <div className="product-grid">
-      {!(products as IProducts[]).length ? (
+      {isLoading ? (
         <LoadingSpinner />
       ) : (
         <InfiniteScroll

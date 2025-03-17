@@ -7,20 +7,29 @@ import SortBy from "../Components/Filters/SortBy";
 interface productsSlice {
   allProducts: IProducts[];
   visibleProducts: IProducts[];
+  isLoading: boolean;
 }
 
 const initialState: productsSlice = {
   allProducts: [],
   visibleProducts: [],
+  isLoading: false,
 };
 
 const productsSlice = createSlice({
   name: "products",
   initialState,
   reducers: {
-    initialSetup: (state, { payload }: PayloadAction<productsSlice>) => {
-      state.allProducts = payload.allProducts;
-      state.visibleProducts = payload.allProducts;
+    initialSetup: (
+      state,
+      {
+        payload: { products },
+      }: PayloadAction<{
+        products: IProducts[];
+      }>
+    ) => {
+      state.allProducts = products;
+      state.visibleProducts = products;
     },
     filterProducts: (
       state,
@@ -82,9 +91,12 @@ const productsSlice = createSlice({
     reset(state) {
       state.visibleProducts = state.allProducts;
     },
+    setLoading: (state, { payload }: PayloadAction<boolean>) => {
+      state.isLoading = payload;
+    },
   },
 });
 
-export const { initialSetup, filterProducts, reset, sortProducts } =
+export const { initialSetup, filterProducts, reset, sortProducts, setLoading } =
   productsSlice.actions;
 export default productsSlice.reducer;

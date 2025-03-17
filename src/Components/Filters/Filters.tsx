@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import {
   filterProducts,
   initialSetup,
+  setLoading,
   sortProducts,
 } from "../../Store/productsSlice";
 import { ProductServices } from "../../Services/ProductsServices";
@@ -53,12 +54,15 @@ const Filters = (props: Props) => {
   }, [searchParams]);
 
   const applyFilters = useCallback(() => {
+    dispatch(setLoading(true));
     dispatch(filterProducts({ filters: filters }));
     dispatch(sortProducts({ sortBy: sortBy as SORT_BY }));
+    dispatch(setLoading(false));
   }, [filters, sortBy]);
 
   const getAllProducts = async () => {
     try {
+      dispatch(setLoading(true));
       let products = await productServices.fetchAllProducts();
       products = products.map((item: IProductsRes) => ({
         ...item,
@@ -66,13 +70,9 @@ const Filters = (props: Props) => {
         keyboard: tokenize(item.creator).concat(tokenize(item.title)),
         price: setPrice(item.pricingOption, item.price),
       }));
-      dispatch(
-        initialSetup({
-          allProducts: products,
-          visibleProducts: products,
-        })
-      );
+      dispatch(initialSetup({ products }));
       applyFilters();
+      dispatch(setLoading(false));
     } catch (err) {
       console.error(err);
     } finally {
