@@ -1,14 +1,19 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { IFilters, IProductsRes, PRICING_OPTION } from "../../types";
+import { IFilters, IProductsRes, PRICING_OPTION, SORT_BY } from "../../types";
 import { DEFAULT_MAX_PRICE, DEFAULT_MIN_PRICE } from "../../constants";
 import SearchBar from "./SearchBar";
 import ContentFilters from "./ContentFilters";
 import { useSearchParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { filterProducts, initialSetup } from "../../Store/productsSlice";
+import {
+  filterProducts,
+  initialSetup,
+  sortProducts,
+} from "../../Store/productsSlice";
 import { ProductServices } from "../../Services/ProductsServices";
-import { pricingMapper, tokenize } from "../../helpers";
+import { pricingMapper, setPrice, tokenize } from "../../helpers";
 import { Box, Typography, Button } from "@mui/material";
+import SortBy from "./SortBy";
 
 type Props = {};
 
@@ -32,6 +37,7 @@ const Filters = (props: Props) => {
     const searchTerm = searchParams.get("searchTerm") || "";
     const min = searchParams.get("minPrice") || DEFAULT_MIN_PRICE;
     const max = searchParams.get("maxPrice") || DEFAULT_MAX_PRICE;
+
     filters.price.min = +min;
     filters.price.max = +max;
 
@@ -42,9 +48,14 @@ const Filters = (props: Props) => {
     return filters;
   }, [searchParams]);
 
+  const sortBy = useMemo(() => {
+    return searchParams.get("sortBy") || SORT_BY.ITEM_NAME;
+  }, [searchParams]);
+
   const applyFilters = useCallback(() => {
     dispatch(filterProducts({ filters: filters }));
-  }, [filters]);
+    dispatch(sortProducts({ sortBy: sortBy as SORT_BY }));
+  }, [filters, sortBy]);
 
   const getAllProducts = async () => {
     try {
@@ -53,6 +64,7 @@ const Filters = (props: Props) => {
         ...item,
         pricingOption: pricingMapper(item.pricingOption),
         keyboard: tokenize(item.creator).concat(tokenize(item.title)),
+        price: setPrice(item.pricingOption, item.price),
       }));
       dispatch(
         initialSetup({
@@ -101,6 +113,7 @@ const Filters = (props: Props) => {
           </Button>
         </Box>
       </Box>
+      <SortBy initialVal={sortBy as SORT_BY} reset={reset} />
     </>
   );
 };

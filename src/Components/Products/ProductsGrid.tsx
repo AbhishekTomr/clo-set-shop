@@ -1,10 +1,8 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { ProductServices } from "../../Services/ProductsServices";
-import { IFilters, IProducts, IProductsRes, PRICING_OPTION } from "../../types";
-import { pricingMapper, tokenize } from "../../helpers";
+import { useMemo, useState } from "react";
+import { IProducts } from "../../types";
+
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../Store/Store";
-import { filterProducts, initialSetup } from "../../Store/productsSlice";
 import { Grid } from "@mui/material";
 import "./Products.scss";
 import Product from "./Product";

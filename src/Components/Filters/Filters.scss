@@ -59,3 +59,27 @@
     }
   }
 }
+
+.sort-by-wrapper {
+  padding: 12px 24px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  .sort-by-lable {
+    padding: 0 12px;
+    color: $primary-text;
+    font-size: 14px;
+  }
+  .sort-by-selector {
+    text-align: center;
+    background-color: $primary-background-2;
+    padding: 3px 5px;
+    .MuiSelect-icon {
+      color: $seondary-text;
+    }
+  }
+}
+
+.MuiList-root.MuiList-padding.MuiMenu-list {
+  background-color: $primary-background-2 !important;
+}

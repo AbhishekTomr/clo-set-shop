@@ -11,6 +11,17 @@ export const pricingMapper = (pricingType: number) => {
   }
 };
 
+export const setPrice = (pricingType: number, price: number) => {
+  switch (pricingType) {
+    case 0:
+      return price;
+    case 1:
+      return 1;
+    default:
+      return 2;
+  }
+};
+
 export const tokenize = (mainString: string, tokens: string[] = []) => {
   const newTokens = mainString.toLocaleLowerCase().split(" ");
   tokens = tokens.concat(newTokens);

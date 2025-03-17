@@ -4,6 +4,12 @@ export enum PRICING_OPTION {
   PAID = "paid",
 }
 
+export enum SORT_BY {
+  ITEM_NAME = "name",
+  PRICE_MAX = "price_max",
+  PRICE_MIN = "price_min",
+}
+
 export interface Product {
   id: string;
   creator: string;

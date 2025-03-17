@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IFilters, IProducts, PRICING_OPTION } from "../types";
+import { IFilters, IProducts, PRICING_OPTION, SORT_BY } from "../types";
 import { stat } from "fs";
 import { tokenize } from "../helpers";
+import SortBy from "../Components/Filters/SortBy";
 
 interface productsSlice {
   allProducts: IProducts[];
@@ -21,33 +22,6 @@ const productsSlice = createSlice({
       state.allProducts = payload.allProducts;
       state.visibleProducts = payload.allProducts;
     },
-    // filterByPriceType: (
-    //   state,
-    //   {
-    //     payload: { priceByFilters },
-    //   }: PayloadAction<{
-    //     priceByFilters: PRICING_OPTION[];
-    //   }>
-    // ) => {
-    //   if (!priceByFilters.length) {
-    //     // state.visibleProducts = state.allProducts;
-    //     return;
-    //   }
-    // },
-    // filterBySearch: (
-    //   state,
-    //   {
-    //     payload: { searchTerm },
-    //   }: PayloadAction<{
-    //     searchTerm: string;
-    //   }>
-    // ) => {
-    //   if (!searchTerm.length) {
-    //     // state.visibleProducts = state.allProducts;
-    //     return;
-    //   }
-    // },
-
     filterProducts: (
       state,
       { payload: { filters } }: PayloadAction<{ filters: IFilters }>
@@ -81,11 +55,36 @@ const productsSlice = createSlice({
       });
       state.visibleProducts = results;
     },
+    sortProducts: (
+      state,
+      { payload: { sortBy } }: PayloadAction<{ sortBy: SORT_BY }>
+    ) => {
+      switch (sortBy) {
+        case SORT_BY.PRICE_MAX: {
+          state.visibleProducts = state.visibleProducts.sort(
+            (a, b) => b.price - a.price
+          );
+          break;
+        }
+        case SORT_BY.PRICE_MIN: {
+          state.visibleProducts = state.visibleProducts.sort(
+            (a, b) => a.price - b.price
+          );
+          break;
+        }
+        default: {
+          state.visibleProducts = state.visibleProducts.sort((a, b) =>
+            a.title.localeCompare(b.title)
+          );
+        }
+      }
+    },
     reset(state) {
       state.visibleProducts = state.allProducts;
     },
   },
 });
 
-export const { initialSetup, filterProducts, reset } = productsSlice.actions;
+export const { initialSetup, filterProducts, reset, sortProducts } =
+  productsSlice.actions;
 export default productsSlice.reducer;
