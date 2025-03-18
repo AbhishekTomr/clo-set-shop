@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/clo-set-shop/static/css/main.1a5468fb.css",
-    "main.js": "/clo-set-shop/static/js/main.8eff3aca.js",
+    "main.js": "/clo-set-shop/static/js/main.a0a0bd6e.js",
     "static/js/453.0354db51.chunk.js": "/clo-set-shop/static/js/453.0354db51.chunk.js",
     "index.html": "/clo-set-shop/index.html",
     "main.1a5468fb.css.map": "/clo-set-shop/static/css/main.1a5468fb.css.map",
-    "main.8eff3aca.js.map": "/clo-set-shop/static/js/main.8eff3aca.js.map",
+    "main.a0a0bd6e.js.map": "/clo-set-shop/static/js/main.a0a0bd6e.js.map",
     "453.0354db51.chunk.js.map": "/clo-set-shop/static/js/453.0354db51.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.1a5468fb.css",
-    "static/js/main.8eff3aca.js"
+    "static/js/main.a0a0bd6e.js"
   ]
 }
