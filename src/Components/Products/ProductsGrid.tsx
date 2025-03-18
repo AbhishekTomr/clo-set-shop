@@ -14,10 +14,10 @@ type Props = {};
 function ProductsGrid({}: Props) {
   const [index, setIndex] = useState(16);
 
-  const [products, isLoading] = useSelector((state: RootState) => {
-    const { visibleProducts, isLoading } = state.products;
-    return [visibleProducts, isLoading];
-  });
+  const products = useSelector(
+    (state: RootState) => state.products.visibleProducts
+  );
+  const isLoading = useSelector((state: RootState) => state.products.isLoading);
 
   const visibleItems = useMemo(
     () => (products as IProducts[]).slice(0, index),

@@ -1,105 +1,121 @@
-import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import Filters from "./Filters";
-import { Provider } from "react-redux";
-import { MemoryRouter, useSearchParams } from "react-router-dom";
-import configureStore from "redux-mock-store";
-import { ProductServices } from "../../Services/ProductsServices";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { IFilters, IProductsRes, PRICING_OPTION, SORT_BY } from "../../types";
+import { DEFAULT_MAX_PRICE, DEFAULT_MIN_PRICE } from "../../constants";
+import SearchBar from "./SearchBar";
+import ContentFilters from "./ContentFilters";
+import { useSearchParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import {
   filterProducts,
   initialSetup,
   setLoading,
   sortProducts,
 } from "../../Store/productsSlice";
+import { ProductServices } from "../../Services/ProductsServices";
+import { pricingMapper, setPrice, tokenize } from "../../helpers";
+import { Box, Typography, Button } from "@mui/material";
+import SortBy from "./SortBy";
 
-jest.mock("../../Services/ProductsServices");
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
-  useSearchParams: jest.fn(() => [new URLSearchParams(), jest.fn()]),
-}));
+type Props = {};
 
-const mockStore = configureStore([]);
+const productServices = new ProductServices();
 
-describe("Filters Component", () => {
-  let store;
+const Filters = (props: Props) => {
+  const [reset, setReset] = useState<boolean>(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const dispatch = useDispatch();
 
-  beforeEach(() => {
-    store = mockStore({
-      products: { items: [], loading: false },
-    });
-    store.dispatch = jest.fn();
-  });
-
-  test("renders filters component", () => {
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <Filters />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(screen.getByText("Pricing Options")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /reset/i })).toBeInTheDocument();
-  });
-
-  test("fetches and sets up products on mount", async () => {
-    const mockProducts = [
-      {
-        id: 1,
-        title: "Product A",
-        creator: "John Doe",
-        pricingOption: "Free",
-        price: 0,
+  const filters = useMemo(() => {
+    const filters: IFilters = {
+      priceType: [],
+      searchTerm: "",
+      price: {
+        min: DEFAULT_MIN_PRICE,
+        max: DEFAULT_MAX_PRICE,
       },
-    ];
-    ProductServices.prototype.fetchAllProducts.mockResolvedValue(mockProducts);
+    };
+    const priceTypeFilters = searchParams.get("priceType");
+    const searchTerm = searchParams.get("searchTerm") || "";
+    const min = searchParams.get("minPrice") || DEFAULT_MIN_PRICE;
+    const max = searchParams.get("maxPrice") || DEFAULT_MAX_PRICE;
 
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <Filters />
-        </MemoryRouter>
-      </Provider>
-    );
+    filters.price.min = +min;
+    filters.price.max = +max;
 
-    await waitFor(() => {
-      expect(store.dispatch).toHaveBeenCalledWith(setLoading(true));
-      expect(store.dispatch).toHaveBeenCalledWith(
-        initialSetup({ products: expect.any(Array) })
-      );
-      expect(store.dispatch).toHaveBeenCalledWith(setLoading(false));
-    });
-  });
+    if (priceTypeFilters) {
+      filters.priceType = priceTypeFilters.split("+") as PRICING_OPTION[];
+    }
+    filters.searchTerm = searchTerm;
+    return filters;
+  }, [searchParams]);
 
-  test("applies filters when changed", () => {
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <Filters />
-        </MemoryRouter>
-      </Provider>
-    );
+  const sortBy = useMemo(() => {
+    return searchParams.get("sortBy") || SORT_BY.ITEM_NAME;
+  }, [searchParams]);
 
-    expect(store.dispatch).toHaveBeenCalledWith(
-      filterProducts({ filters: expect.any(Object) })
-    );
-    expect(store.dispatch).toHaveBeenCalledWith(
-      sortProducts({ sortBy: expect.any(String) })
-    );
-  });
+  const applyFilters = useCallback(() => {
+    dispatch(setLoading(true));
+    dispatch(filterProducts({ filters: filters }));
+    dispatch(sortProducts({ sortBy: sortBy as SORT_BY }));
+    dispatch(setLoading(false));
+  }, [filters, sortBy]);
 
-  test("resets filters when reset button is clicked", () => {
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <Filters />
-        </MemoryRouter>
-      </Provider>
-    );
+  const getAllProducts = async () => {
+    try {
+      dispatch(setLoading(true));
+      let products = await productServices.fetchAllProducts();
+      products = products.map((item: IProductsRes) => ({
+        ...item,
+        pricingOption: pricingMapper(item.pricingOption),
+        keyboard: tokenize(item.creator).concat(tokenize(item.title)),
+        price: setPrice(item.pricingOption, item.price),
+      }));
+      dispatch(initialSetup({ products }));
+      applyFilters();
+      dispatch(setLoading(false));
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setTimeout(() => {}, 1000);
+    }
+  };
 
-    const resetButton = screen.getByRole("button", { name: /reset/i });
-    fireEvent.click(resetButton);
+  useEffect(() => {
+    if (reset) {
+      setTimeout(() => {
+        setReset(false);
+      }, 100);
+    }
+  }, [reset]);
 
-    expect(store.dispatch).toHaveBeenCalledTimes(0); // No dispatch, as it clears search params
-  });
-});
+  useEffect(() => {
+    getAllProducts();
+  }, []);
+
+  useEffect(() => {
+    applyFilters();
+  }, [filters]);
+
+  const onReset = () => {
+    setSearchParams(new URLSearchParams());
+    setReset(true);
+  };
+
+  return (
+    <>
+      <SearchBar initialVal={filters.searchTerm as string} reset={reset} />
+      <Box className="pricing-opt-wrapper">
+        <Box className="filters">
+          <Typography className="pricing-label">Pricing Options</Typography>
+          <ContentFilters initialVal={filters} reset={reset} />
+          <Button className="reset-btn" onClick={onReset}>
+            Reset
+          </Button>
+        </Box>
+      </Box>
+      <SortBy initialVal={sortBy as SORT_BY} reset={reset} />
+    </>
+  );
+};
+
+export default Filters;

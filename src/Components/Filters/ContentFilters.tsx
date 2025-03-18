@@ -1,16 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { IFilters, PRICING_OPTION } from "../../types";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import "./Filters.scss";
-import {
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  Button,
-  Typography,
-  Container,
-  Box,
-} from "@mui/material";
+import { Checkbox, FormControl, FormControlLabel } from "@mui/material";
 import PriceSlider from "../Common/PriceSlider";
 
 type Props = {
@@ -32,7 +24,7 @@ function ContentFilters({ initialVal: { priceType, price }, reset }: Props) {
   const togglePrice = (pricingOpt: PRICING_OPTION) => {
     setPriceFilter((prices: PRICING_OPTION[]) => {
       if (prices.includes(pricingOpt)) {
-        let newPrices = prices.filter((item) => item !== pricingOpt);
+        let newPrices = prices.filter((testem) => testem !== pricingOpt);
         return newPrices;
       }
       return [...prices, pricingOpt];

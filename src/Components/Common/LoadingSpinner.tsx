@@ -6,7 +6,7 @@ type Props = {};
 
 function LoadingSpinner({}: Props) {
   return (
-    <div className="progress-wrapper">
+    <div className="progress-wrapper" data-testid="progress">
       <CircularProgress color="secondary" size={50} className="progress" />
     </div>
   );

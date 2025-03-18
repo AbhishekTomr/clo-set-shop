@@ -50,6 +50,7 @@ const SortBy = ({ initialVal, reset }: Props) => {
           onChange={onChangeHandler}
           label="Age"
           color={"primary"}
+          data-testid="sort-by"
         >
           <MenuItem
             value={SORT_BY.ITEM_NAME}

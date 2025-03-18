@@ -48,6 +48,7 @@ const PriceSlider = ({ initialVal, reset }: Props) => {
         className="slider"
         min={0}
         max={999}
+        data-testid="slider"
       />
       <span className="price price-end">{`$ ${priceRange[1]}`}</span>
     </Box>
