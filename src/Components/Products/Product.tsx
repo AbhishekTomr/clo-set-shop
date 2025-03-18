@@ -26,6 +26,7 @@ const Product = ({ product }: Props) => {
         image={product.imagePath}
         alt={product.title}
         className="product-img"
+        loading="lazy"
       />
       <CardContent className="product-content">
         <Box className="product-details">
