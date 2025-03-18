@@ -1,6 +1,6 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
 import PriceSlider from "../PriceSlider";
+import { render, screen } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 
 describe("PriceSlider Component", () => {
@@ -12,19 +12,19 @@ describe("PriceSlider Component", () => {
     );
   };
 
-  test("should render price slider with initial values", () => {
+  it("should render price slider with initial values", () => {
     renderComponent();
     expect(screen.getByText("100")).toBeInTheDocument();
     expect(screen.getByText("$ 500")).toBeInTheDocument();
   });
 
-  test("should update price range when slider is moved", async () => {
+  it("should update price range when slider is moved", async () => {
     renderComponent();
     const slider = await screen.findByTestId("slider");
     expect(slider).toBeInTheDocument();
   });
 
-  test("should reset to initial values when reset is true", () => {
+  it("should reset to initial values when reset is true", () => {
     const { rerender } = renderComponent([150, 400], false);
     rerender(
       <BrowserRouter>

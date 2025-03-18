@@ -1,11 +1,5 @@
-import { store, RootState } from "../Store";
-import productReducer, {
-  initialSetup,
-  filterProducts,
-  reset,
-  sortProducts,
-  setLoading,
-} from "../productsSlice";
+import { store } from "../Store";
+import productReducer, { initialSetup, setLoading } from "../productsSlice";
 import { IProducts, PRICING_OPTION } from "../../types";
 
 describe("Redux Store", () => {

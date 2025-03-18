@@ -67,7 +67,7 @@ describe("Filters Component", () => {
     (tokenize as jest.Mock).mockReturnValue([]);
   });
 
-  test("renders Filters component correctly", () => {
+  it("renders Filters component correctly", () => {
     renderComponent();
     expect(screen.getByText("Pricing Options")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /reset/i })).toBeInTheDocument();

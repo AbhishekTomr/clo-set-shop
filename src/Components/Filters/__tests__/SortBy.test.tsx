@@ -19,12 +19,12 @@ const renderComponent = (initialVal = SORT_BY.ITEM_NAME, reset = false) => {
 };
 
 describe("SortBy Component", () => {
-  test("renders the Sort By dropdown", () => {
+  it("renders the Sort By dropdown", () => {
     renderComponent();
     expect(screen.getByLabelText("Sort By")).toBeInTheDocument();
   });
 
-  test("selects a sorting option and updates state", () => {
+  it("selects a sorting option and updates state", () => {
     renderComponent();
 
     const selectElement = screen.getByTestId("sort-by");
@@ -37,7 +37,7 @@ describe("SortBy Component", () => {
     });
   });
 
-  test("resets to initial value when reset is true", () => {
+  it("resets to initial value when reset is true", () => {
     const { rerender } = renderComponent(SORT_BY.PRICE_MAX, false);
 
     const selectElement = screen.getByTestId("sort-by");
@@ -52,7 +52,7 @@ describe("SortBy Component", () => {
     expect(selectElement).toHaveTextContent("Relevance");
   });
 
-  test("updates searchParams when sorting changes", () => {
+  it("updates searchParams when sorting changes", () => {
     renderComponent();
 
     const selectElement = screen.getByTestId("sort-by");

@@ -1,8 +1,8 @@
-import { render, screen } from "@testing-library/react";
 import App from "./App";
 import { Provider } from "react-redux";
 import { store } from "./Store/Store";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { render, screen } from "@testing-library/react";
 
 jest.mock("./Components/Products/ProductsGrid", () => () => (
   <div data-testid="products-grid">ProductsGrid Component</div>
@@ -30,17 +30,17 @@ describe("App Component", () => {
       </ThemeProvider>
     );
 
-  test("renders the AppBar with title", () => {
+  it("renders the AppBar with title", () => {
     renderApp();
     expect(screen.getByText("ClO-SET")).toBeInTheDocument();
   });
 
-  test("renders Filters component", () => {
+  it("renders Filters component", () => {
     renderApp();
     expect(screen.getByTestId("filters")).toBeInTheDocument();
   });
 
-  test("renders ProductsGrid component", () => {
+  it("renders ProductsGrid component", () => {
     renderApp();
     expect(screen.getByTestId("products-grid")).toBeInTheDocument();
   });

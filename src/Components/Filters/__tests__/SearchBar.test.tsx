@@ -1,8 +1,6 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import SearchBar from "../SearchBar";
-import { Provider } from "react-redux";
-import { store } from "../../../Store/Store";
 
 const renderComponent = (initialVal = "", reset = false) => {
   return render(

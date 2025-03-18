@@ -1,11 +1,10 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureMockStore from "redux-mock-store";
-import thunk from "redux-thunk";
 import ProductsGrid from "../ProductsGrid";
 import { RootState } from "../../../Store/Store";
 import { IProducts, PRICING_OPTION } from "../../../types";
+import { render, screen } from "@testing-library/react";
 
 const middlewares: any = [];
 const mockStore = configureMockStore<RootState>(middlewares);
