@@ -43,6 +43,7 @@
       @media (max-width: $screen-md) {
         align-items: center;
         justify-content: center;
+        flex-flow: column nowrap;
       }
       .checkbox {
         color: $seondary-text;
