@@ -44,3 +44,31 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+------------- Project Details---------------
+Project is live on the URL - https://abhishektomr.github.io/clo-set-shop/
+
+Details About the Project -
+
+Techstack Used - Html, css, scss, javascript, typescript,material ui,react js, react-router, redux-toolkit, react-testing-library.
+
+Features Implemented -
+
+1. Content Filter.
+2. Content List (Grid with responsive view).
+3. Infinite Scrolling.
+4. Keyword Search.
+5. Sorting.
+6. Pricing Slider.
+7. Project is written using Typescript.
+8. Unit Testing - Using RTL.
+
+How to run the project -
+
+1. Clone the app from the following github url : https://github.com/AbhishekTomr/clo-set-shop
+2. install the dependencies using the command - npm install (make sure u have node js installed along with npm).
+3. run the project - npm start.
+4. run test cases - npm test.
+5. run a particular test case - npm test "test file name"
+
+---
